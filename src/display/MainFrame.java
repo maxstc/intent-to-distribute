@@ -4,8 +4,13 @@ import javax.swing.JFrame;
 
 import engine.Game;
 
+/**
+ * This is the main JFrame that contains all the graphics
+ */
 public class MainFrame extends JFrame {
 	
+	private static final long serialVersionUID = -7432036344419817493L;
+
 	private Display display;
 	
 	public MainFrame(int width, int height, Game game) {
@@ -26,10 +31,6 @@ public class MainFrame extends JFrame {
 	
 	public Display getDisplay() {
 		return display;
-	}
-	
-	public void giveStats(int fps, int ups) {
-		display.giveStats(fps, ups);
 	}
 	
 }

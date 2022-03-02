@@ -10,11 +10,14 @@ import java.awt.event.MouseWheelListener;
 
 import engine.Game;
 
+/**
+ * This class reads the inputs from the user
+ */
 public class Input implements KeyListener, MouseListener, MouseWheelListener {
     
 	private Game game;
 	
-    private boolean[] pressed;
+    private boolean[] pressed; //pressed[<some keycode>] is true if it is currently being pressed, false otherwise
     private float mouseScrollAmount;
 
     public Input(Game game) {

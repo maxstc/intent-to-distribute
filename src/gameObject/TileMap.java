@@ -1,26 +1,23 @@
 package gameObject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import engine.Game;
-
+/**
+ * This class contains the {@code Tile}s and methods dealing with their manipulation and creation
+ */
 public class TileMap {
 
 	private Tile[][] tiles;
-	private Game game;
 	private Set<Point> points;
 	
-	public TileMap(int width, int length, Game game) {
+	public TileMap(int width, int length) {
 		tiles = new Tile[width][length];
-		this.game = game;
 		points = new HashSet<>();
 		initializeTiles();
+		//procedurally generate the map
 		splitTiles(30);
+		splitTiles(8);
 		smooth(3);
 	}
 	
@@ -28,6 +25,9 @@ public class TileMap {
 		return tiles;
 	}
 	
+	/**
+	 * Creates the tiles of the map
+	 */
 	private void initializeTiles() {
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[0].length; j++) {
@@ -48,14 +48,24 @@ public class TileMap {
 		}
 	}
 	
-	public void updatePoints() {
-		int halfWidth = game.getMainFrame().getDisplay().getWidth() / 2;
-		int halfHeight = game.getMainFrame().getDisplay().getHeight() / 2;
-		for (Point p : points) {
-			p.update(game.getCamera().getX(), game.getCamera().getY(), game.getCamera().getZoom(), halfWidth, halfHeight);
-		}
+	public Set<Point> getPoints() {
+		return points;
 	}
 	
+//	public void updatePoints() {
+//		int halfWidth = game.getMainFrame().getDisplay().getWidth() / 2;
+//		int halfHeight = game.getMainFrame().getDisplay().getHeight() / 2;
+//		for (Point p : points) {
+//			p.update(game.getCamera().getX(), game.getCamera().getY(), game.getCamera().getZoom(), halfWidth, halfHeight);
+//		}
+//	}
+	
+	/**
+	 * Creates a new point given coordinates
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public Point createNewPoint(float x, float y) {
 		
 		Point newPoint = new Point(x, y);
@@ -71,6 +81,14 @@ public class TileMap {
 		
 	}
 	
+	/**
+	 * Calls {@code smooth()} on each tile, then resets their color and tileDataAlpha
+	 * 
+	 * Here, {@code reset()} sets the values so that each tile can be modified depending on their neighbors original tileDataAlpha. For example,
+	 * if a neighbor has {@code smooth()} called and its tileDataAlpha was changed, if any of its neighbors called {@code smooth()}, they would
+	 * read the first neighbor's tileDataAlpha as the changed one, resulting in odd effects that depend on which order {@code smooth()} is called.
+	 * @param n the number of times to smooth
+	 */
 	public void smooth(int n) {
 		for (int k = 0; k < n; k++) {
 			for (int i = 0; i < tiles.length; i++) {
@@ -86,53 +104,53 @@ public class TileMap {
 		}
 	}
 	
+	/**
+	 * Splits the tiles into n chunks and modifies the tileDataAlpha of each tile in each chunk by the same random number
+	 * @param n
+	 */
 	public void splitTiles(int n) {
 		
-		Tile[] sources = new Tile[n];
-		Set<Tile>[] plates = new HashSet[n];
-		Set<Tile> assignedTiles = new HashSet<>();
-		Set<Tile> disabledTiles = new HashSet<>();
-		int numAssigned = 0;
+		Set<Tile>[] plates = new HashSet[n]; //an array containing each chunk (plate)
+		Set<Tile> assignedTiles = new HashSet<>(); //keep track of tiles that have already been assigned to avoid overlap
+		Set<Tile> disabledTiles = new HashSet<>(); //keep track of tiles whose neighbors are all already assigned to speed up the algorithm
+		int numAssigned = 0; //keep track of the number of tiles assigned so we know when we're finished
 		int numTiles = tiles.length * tiles[0].length;
 		
-		for (int i = 0; i < sources.length; i++) {
-			plates[i] = new HashSet<Tile>();
-			Tile sourceTile = tiles[(int)(Math.random() * getTiles().length)][(int)(Math.random() * getTiles()[0].length)];
-			while (assignedTiles.contains(sourceTile)) {
+		//initialize plates with unique source tiles
+		for (int i = 0; i < n; i++) { //for each plate
+			plates[i] = new HashSet<Tile>(); //initialize the plate
+			Tile sourceTile = tiles[(int)(Math.random() * getTiles().length)][(int)(Math.random() * getTiles()[0].length)]; //try to set the source tile
+			while (assignedTiles.contains(sourceTile)) { //keep trying to assign it if its already assigned
 				sourceTile = tiles[(int)(Math.random() * getTiles().length)][(int)(Math.random() * getTiles()[0].length)];
 			}
-			sources[i] = sourceTile;
 			plates[i].add(sourceTile);
 			assignedTiles.add(sourceTile);
 			numAssigned++;
 		}
 		
-		while (numAssigned < numTiles) {
-			for (int i = 0; i < plates.length; i++) {
-				Set<Tile> newTiles = new HashSet<>();
-				for (Tile t : plates[i]) {
-					if (!disabledTiles.contains(t)) {
-						//do stuff
-						Set<Tile> neighbors = t.getNeighbors();
-						for (Tile s : neighbors) {
-							if (!assignedTiles.contains(s)) {
-								newTiles.add(s);
-								assignedTiles.add(s);
-								numAssigned++;
+		while (numAssigned < numTiles) { //continue until we run out of tiles to assign
+			for (int i = 0; i < plates.length; i++) { //for each plate
+				for (Tile t : plates[i]) { //for each tile in this plate
+					if (!disabledTiles.contains(t)) { //if the tile isnt disabled
+						Set<Tile> neighbors = t.getNeighbors(); //get the tile's neighbors
+						for (Tile s : neighbors) { //for each neighbor
+							if (!assignedTiles.contains(s)) { //if it isn't already assigned
+								plates[i].add(s); //add it to the plate
+								assignedTiles.add(s); //add it to the list of assigned tiles
+								numAssigned++; //increment the number of total assigned tiles
 							}
 						}
-						disabledTiles.add(t);
+						disabledTiles.add(t); //disable the tile who's neighbors are all now assigned
 					}
 				}
-				plates[i].addAll(newTiles);
 			}
 		}
 		
-		for (int i = 0; i < plates.length; i++) {
-			float rand = (float) Math.random();
-			for (Tile t : plates[i]) {
-				t.tileDataBeta = rand * 0.3f + t.tileDataBeta * 0.7f;
-				t.reset();
+		for (int i = 0; i < plates.length; i++) { //for each plate
+			float rand = (float) Math.random(); //generate a random number
+			for (Tile t : plates[i]) { //for each tile in that plate
+				t.tileDataBeta = rand * 0.3f + t.tileDataBeta * 0.7f; //modify the tile's data by that random number
+				t.reset(); //reset the tileDataAlpha and color of that tile
 			}
 		}
 		

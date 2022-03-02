@@ -1,5 +1,8 @@
 package display;
 
+/**
+ * This class contains data dealing with the position and zoom of the camera
+ */
 public class Camera {
 	private float x;
 	private float y;
@@ -23,10 +26,17 @@ public class Camera {
 		return zoom;
 	}
 	
+	/**
+	 * Updates the position and zoom of the camera
+	 * @param dx
+	 * @param dy
+	 * @param mouseScroll
+	 */
 	public void update(float dx, float dy, float mouseScroll) {
 		x+=dx;
 		y+=dy;
-		
+
+		//set maximum values for x and y
 //		if (x < 0) {
 //			x = 0;
 //		}

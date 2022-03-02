@@ -1,20 +1,21 @@
 package engine;
 
-import java.awt.Color;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import display.Camera;
 import display.MainFrame;
-import gameObject.Point;
 import gameObject.Tile;
 import gameObject.TileMap;
 import input.Input;
 
+/**
+ * This class connects the visual, interactive, and simulation parts of the game
+ */
 public class Game {
+	
+	private static int mapSize = 60;
+	
+	
 	
 	private MainFrame mainFrame;
 	private Input input;
@@ -30,7 +31,7 @@ public class Game {
 	
 	public Game() {
 		camera = new Camera();
-		tileMap = new TileMap(100, 100, this);
+		tileMap = new TileMap(mapSize, mapSize);
 		mainFrame = new MainFrame(800, 600, this);
 		input = new Input(this);
 		
@@ -75,13 +76,26 @@ public class Game {
 			tick();
 			tickProgress = 0;
 		}
-		tileMap.updatePoints();
 	}
 	
+	/**
+	 * Performs a game tick
+	 * 
+	 * Not yet implemented
+	 */
 	public void tick() {
 		
 	}
 	
+	public TileMap getTileMap() {
+		return tileMap;
+	}
+	
+	/**
+	 * Called when the user clicks on the screen.
+	 * 
+	 * Recreates the map.
+	 */
 	public void click(int x, int y, boolean isLeftClick) {
 		float cartX = (x - mainFrame.getDisplay().getWidth() / 2) / camera.getZoom() + camera.getX();
 		float cartY = (y - mainFrame.getDisplay().getHeight() / 2) / camera.getZoom() + camera.getY();
@@ -89,6 +103,7 @@ public class Game {
 		int trueX = 0;
 		int trueY = 0;
 		
+		//Determine the tile that was clicked on
 		if (cartX >= 0 && cartY >= 0) {
 			float testY = (float) (cartY / (Math.sqrt(3) / 2)) % 1;
 			float testX = 2 * (cartX % 1.5f);
@@ -129,13 +144,17 @@ public class Game {
 		
 		System.out.println(trueX + ", " + trueY);
 		
-		if (isLeftClick) {
-			tileMap.getTiles()[trueX][trueY].tileDataBeta = 1;
-		}
-		else {
-			tileMap.getTiles()[trueX][trueY].tileDataBeta = 0;
-		}
-		tileMap.getTiles()[trueX][trueY].reset();
+//		if (isLeftClick) {
+//			tileMap.getTiles()[trueX][trueY].tileDataBeta = 1;
+//		}
+//		else {
+//			tileMap.getTiles()[trueX][trueY].tileDataBeta = 0;
+//		}
+//		tileMap.getTiles()[trueX][trueY].reset();
+		
+		//Generates a new map
+		tileMap = new TileMap(mapSize, mapSize);
+		mainFrame.getDisplay().resetRenderer();
 		
 	}
 	
@@ -143,6 +162,11 @@ public class Game {
 		return (tickProgress / (float) updatesPerTick);
 	}
 	
+	/**
+	 * Called when the user presses a button
+	 * 
+	 * Currently only changes the speed of ticks
+	 */
 	public void press(char c) {
 		switch(c) {
 			case (' '):
@@ -176,10 +200,6 @@ public class Game {
 	
 	public MainFrame getMainFrame() {
 		return mainFrame;
-	}
-	
-	public void giveStats(int fps, int ups) {
-		mainFrame.giveStats(fps, ups);
 	}
 	
 }
