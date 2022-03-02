@@ -57,6 +57,8 @@ public class Renderer {
 			return t.isVisible(minX, maxX, minY, maxY);
 		}).collect(Collectors.toList());
 		
+		//---------------------TODO speed up rendering below--------------------------
+		
 		//Update the x and y values stored in the hexagons {@code Tile}s
 		visibleTiles.parallelStream().forEach((Tile t) -> {
 			t.updatePoints();
