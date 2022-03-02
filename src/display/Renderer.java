@@ -59,19 +59,28 @@ public class Renderer {
 		
 		//---------------------TODO speed up rendering below--------------------------
 		
+		long time = System.currentTimeMillis();
 		//Update the x and y values stored in the hexagons {@code Tile}s
 		visibleTiles.parallelStream().forEach((Tile t) -> {
 			t.updatePoints();
 		});
+		System.out.println("a:" + (System.currentTimeMillis() - time));
+		time = System.currentTimeMillis();
+		
 		//Draw each {@code Tile}
 		visibleTiles.forEach((Tile t) -> {
 			drawTile(g, t);
 		});
+		System.out.println("b:" + (System.currentTimeMillis() - time));
+		time = System.currentTimeMillis();
+		
 		//Draw each (@code Tile}'s outline
 		g.setColor(outlineColor);
 		visibleTiles.parallelStream().forEach((Tile t) -> {
 			drawOutline(g, t);
 		});
+		System.out.println("c:" + (System.currentTimeMillis() - time));
+		time = System.currentTimeMillis();
 	}
 	
 	/**

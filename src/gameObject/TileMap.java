@@ -130,12 +130,13 @@ public class TileMap {
 		
 		while (numAssigned < numTiles) { //continue until we run out of tiles to assign
 			for (int i = 0; i < plates.length; i++) { //for each plate
+				Set<Tile> newTiles = new HashSet<>(); //temp varaible to avoid concurrent modification
 				for (Tile t : plates[i]) { //for each tile in this plate
 					if (!disabledTiles.contains(t)) { //if the tile isnt disabled
 						Set<Tile> neighbors = t.getNeighbors(); //get the tile's neighbors
 						for (Tile s : neighbors) { //for each neighbor
 							if (!assignedTiles.contains(s)) { //if it isn't already assigned
-								plates[i].add(s); //add it to the plate
+								newTiles.add(s); //add it to the plate
 								assignedTiles.add(s); //add it to the list of assigned tiles
 								numAssigned++; //increment the number of total assigned tiles
 							}
@@ -143,6 +144,7 @@ public class TileMap {
 						disabledTiles.add(t); //disable the tile who's neighbors are all now assigned
 					}
 				}
+				plates[i].addAll(newTiles);
 			}
 		}
 		
