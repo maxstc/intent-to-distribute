@@ -16,6 +16,8 @@ public class Tile {
 	public float tileDataAlpha;
 	public float tileDataBeta; //intermediary value used for changing the tileDataAlpha
 	
+	private TileData tileData;
+	
 	private static final float SQRT_3 = (float) Math.sqrt(3.0);
 
 	private int x;
@@ -40,10 +42,9 @@ public class Tile {
 	public Tile(int x, int y, float sideLength, TileMap tileMap) {
 		
 		tileDataAlpha = (float) Math.random();
-		
 		tileDataBeta = tileDataAlpha;
 		
-		//tileData = new TileData();
+		tileData = new TileData();
 		
 		this.x = x;
 		this.y = y;
@@ -69,9 +70,9 @@ public class Tile {
 		return y;
 	}
 	
-//	public TileData getTileData() {
-//		return tileData;
-//	}
+	public TileData getTileData() {
+		return tileData;
+	}
 	
 	/**
 	 * Finds the neighbors of this tile and sets this tile's tileDataAlpha to a weighted average of its and its neighbors (and their neighbors') tileDataAlpha
@@ -110,16 +111,6 @@ public class Tile {
 	public void reset() {
 		tileDataAlpha = tileDataBeta;
 		color = rain(tileDataAlpha);
-//		if (tileDataAlpha <= 0.05) {
-//			color = new Color(0, 0, 20);
-//		}
-//		else if (tileDataAlpha <= 0.6) {
-//			color = new Color(100, 125, 20);
-//		}
-//		else {
-//			color = new Color(80, 180, 200);
-//		}
-//		color = new Color((int) (tileDataAlpha * 255), (int) (tileDataAlpha * 255), (int) (tileDataAlpha * 255));
 	}
 	
 	/**
@@ -203,19 +194,6 @@ public class Tile {
 		addNeighbor(neighbors, x-1, y+mod);
 		addNeighbor(neighbors, x+1, y-1+mod);
 		addNeighbor(neighbors, x+1, y+mod);
-		
-//		addNeighbor(neighbors, x-2, y);
-//		addNeighbor(neighbors, x-2, y-1);
-//		addNeighbor(neighbors, x-1, y-2+mod);
-//		addNeighbor(neighbors, x, y-2);
-//		addNeighbor(neighbors, x+1, y-2+mod);
-//		addNeighbor(neighbors, x+2, y-1);
-//		addNeighbor(neighbors, x+2, y);
-//		addNeighbor(neighbors, x+2, y+1);
-//		addNeighbor(neighbors, x+1, y+1+mod);
-//		addNeighbor(neighbors, x, y+2);
-//		addNeighbor(neighbors, x-1, y+1+mod);
-//		addNeighbor(neighbors, x-2, y+1+mod);
 		
 		return neighbors;
 	}

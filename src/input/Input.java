@@ -29,39 +29,35 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener {
     public boolean isPressed(int keyCode) {
         return pressed[keyCode];
     }
+    
     @Override
 	public void keyTyped(KeyEvent e) {
 		game.press(e.getKeyChar());
 	}
+    
 	@Override
 	public void keyPressed(KeyEvent e) {
 		pressed[e.getKeyCode()] = true;
 	}
+	
 	@Override
 	public void keyReleased(KeyEvent e) {
 		pressed[e.getKeyCode()] = false;
 	}
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {}
-	@Override
 	public void mousePressed(MouseEvent e) {
 		game.click(e.getX(), e.getY(), e.getButton() == e.BUTTON1);
 	}
-	@Override
-	public void mouseReleased(MouseEvent e) {}
-	@Override
-	public void mouseEntered(MouseEvent e) {}
-	@Override
-	public void mouseExited(MouseEvent e) {}
 	
 	public int getX() {
 		return MouseInfo.getPointerInfo().getLocation().x;
 	}
+	
 	public int getY() {
 		return MouseInfo.getPointerInfo().getLocation().y;
 	}
-
+	
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		mouseScrollAmount += e.getPreciseWheelRotation();
@@ -72,4 +68,13 @@ public class Input implements KeyListener, MouseListener, MouseWheelListener {
 		mouseScrollAmount = 0;
 		return output;
 	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {}
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+	@Override
+	public void mouseExited(MouseEvent e) {}
 }

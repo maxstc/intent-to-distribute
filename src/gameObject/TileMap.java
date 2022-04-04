@@ -52,14 +52,6 @@ public class TileMap {
 		return points;
 	}
 	
-//	public void updatePoints() {
-//		int halfWidth = game.getMainFrame().getDisplay().getWidth() / 2;
-//		int halfHeight = game.getMainFrame().getDisplay().getHeight() / 2;
-//		for (Point p : points) {
-//			p.update(game.getCamera().getX(), game.getCamera().getY(), game.getCamera().getZoom(), halfWidth, halfHeight);
-//		}
-//	}
-	
 	/**
 	 * Creates a new point given coordinates
 	 * @param x
@@ -69,12 +61,6 @@ public class TileMap {
 	public Point createNewPoint(float x, float y) {
 		
 		Point newPoint = new Point(x, y);
-		
-//		for (Point p : points) {
-//			if (newPoint.getX() == p.getX() && newPoint.getY() == p.getY()) {
-//				System.out.println("Duplicate point at" + p.getX() + ", " + p.getY());
-//			}
-//		}
 		
 		points.add(newPoint);
 		return newPoint;

@@ -144,14 +144,6 @@ public class Game {
 		
 		System.out.println(trueX + ", " + trueY);
 		
-//		if (isLeftClick) {
-//			tileMap.getTiles()[trueX][trueY].tileDataBeta = 1;
-//		}
-//		else {
-//			tileMap.getTiles()[trueX][trueY].tileDataBeta = 0;
-//		}
-//		tileMap.getTiles()[trueX][trueY].reset();
-		
 		//Generates a new map
 		tileMap = new TileMap(mapSize, mapSize);
 		mainFrame.getDisplay().resetRenderer();
