@@ -11,7 +11,7 @@ public class Camera {
 	public Camera() {
 		this.x = 50;
 		this.y = 50;
-		this.zoom = 5;
+		this.zoom = 20;
 	}
 	
 	public float getX() {

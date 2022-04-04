@@ -13,7 +13,7 @@ import input.Input;
  */
 public class Game {
 	
-	private static int mapSize = 60;
+	private static int mapSize = 100;
 	
 	
 	
@@ -57,16 +57,16 @@ public class Game {
 		float dx = 0;
 		float dy = 0;
 		if (input.isPressed(KeyEvent.VK_W)) {
-			dy = -5 / camera.getZoom();
+			dy = -10 / camera.getZoom();
 		}
 		if (input.isPressed(KeyEvent.VK_S)) {
-			dy = 5 / camera.getZoom();
+			dy = 10 / camera.getZoom();
 		}
 		if (input.isPressed(KeyEvent.VK_A)) {
-			dx = -5 / camera.getZoom();
+			dx = -10 / camera.getZoom();
 		}
 		if (input.isPressed(KeyEvent.VK_D)) {
-			dx = 5 / camera.getZoom();
+			dx = 10 / camera.getZoom();
 		}
 		camera.update(dx, dy, input.getMouseWheelRotation());
 		if (ticking) {
