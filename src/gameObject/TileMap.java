@@ -144,4 +144,11 @@ public class TileMap {
 		
 	}
 	
+	public Tile getTile(int x, int y) {
+		if (x < 0 || x >= tiles.length || y < 0 || y >= tiles[0].length) {
+			return null;
+		}
+		return tiles[x][y];
+	}
+	
 }

@@ -15,7 +15,7 @@ public class Game {
 	
 	private static int mapSize = 100;
 	
-	
+	private Tile selectedTile;
 	
 	private MainFrame mainFrame;
 	private Input input;
@@ -41,6 +41,8 @@ public class Game {
 		mainFrame.getDisplay().addMouseListener(input);
 		mainFrame.getDisplay().addKeyListener(input);
 		mainFrame.getDisplay().addMouseWheelListener(input);
+		
+		selectedTile = null;
 	}
 	
 	
@@ -144,10 +146,17 @@ public class Game {
 		
 		System.out.println(trueX + ", " + trueY);
 		
-		//Generates a new map
-		tileMap = new TileMap(mapSize, mapSize);
-		mainFrame.getDisplay().resetRenderer();
+		selectedTile = tileMap.getTile(trueX, trueY);
+		System.out.println(selectedTile);
 		
+		//Generates a new map
+		//tileMap = new TileMap(mapSize, mapSize);
+		//mainFrame.getDisplay().resetRenderer();
+		
+	}
+	
+	public Tile getSelectedTile() {
+		return selectedTile;
 	}
 	
 	public float getTickProgress() {

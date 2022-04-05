@@ -24,6 +24,8 @@ public class Renderer {
 	private final static float TWO_DIV_SQRT_3 = (float) (2 / Math.sqrt(3));
 	private final static int SQRT_3_DIV_2 = (int) (Math.sqrt(3) / 2);
 	
+	private float animationCounter;
+	
 	public Renderer(Game game) {
 		this.game = game;
 		tiles = new ArrayList<>();
@@ -33,6 +35,7 @@ public class Renderer {
 				tiles.add(game.getTiles()[i][j]);
 			}
 		}
+		animationCounter = 0;
 	}
 	
 	/**
@@ -79,6 +82,8 @@ public class Renderer {
 //		visibleTiles.parallelStream().forEach((Tile t) -> {
 //			drawOutline(img, t);
 //		});
+
+		shadeSelectedTile(g);
 	}
 	
 	/**
@@ -87,6 +92,32 @@ public class Renderer {
 	private void drawTile(Graphics g, Tile t) {
 		g.setColor(t.getColor());
 		g.fillPolygon(t.getXPoints(), t.getYPoints(), 6);
+	}
+	
+	private void shadeSelectedTile(Graphics g) {
+		Tile st = game.getSelectedTile();
+		if (st != null) {
+			int red = (int) ((st.getColor().getRed() * (2 * Math.abs(0.5f - animationCounter)) + (255 * (1 - (2 * Math.abs(0.5f - animationCounter))))));
+			if (red > 255) {
+				red = 255;
+			}
+			int green = (int) ((st.getColor().getGreen() * (2 * Math.abs(0.5f - animationCounter)) + (255 * (1 - (2 * Math.abs(0.5f - animationCounter))))));
+			if (green > 255) {
+				green = 255;
+			}
+			int blue = (int) ((st.getColor().getBlue() * (2 * Math.abs(0.5f - animationCounter)) + (255 * (1 - (2 * Math.abs(0.5f - animationCounter))))));
+			if (blue > 255) {
+				blue = 255;
+			}
+			g.setColor(new Color(red, green, blue));
+			g.fillPolygon(st.getXPoints(), st.getYPoints(), 6);
+			g.setColor(Color.white);
+			g.drawPolygon(st.getXPoints(), st.getYPoints(), 6);
+		}
+		animationCounter += 0.01f;
+		if (animationCounter > 1f) {
+			animationCounter = 0f;
+		}
 	}
 	
 	//Potential to draw hexes faster? (probably not)
