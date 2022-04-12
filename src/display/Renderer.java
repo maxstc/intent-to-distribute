@@ -83,7 +83,7 @@ public class Renderer {
 //			drawOutline(img, t);
 //		});
 
-		shadeSelectedTile(g);
+		shadeSelectedTile(g, minX, maxX, minY, maxY);
 	}
 	
 	/**
@@ -94,9 +94,9 @@ public class Renderer {
 		g.fillPolygon(t.getXPoints(), t.getYPoints(), 6);
 	}
 	
-	private void shadeSelectedTile(Graphics g) {
+	private void shadeSelectedTile(Graphics g, float minX, float maxX, float minY, float maxY) {
 		Tile st = game.getSelectedTile();
-		if (st != null) {
+		if (st != null && st.isVisible(minX, maxX, minY, maxY)) {
 			int red = (int) ((st.getColor().getRed() * (2 * Math.abs(0.5f - animationCounter)) + (255 * (1 - (2 * Math.abs(0.5f - animationCounter))))));
 			if (red > 255) {
 				red = 255;

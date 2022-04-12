@@ -7,8 +7,8 @@ public class Loop implements Runnable {
 	private Game game;
 
     private boolean running;
-    private final double updateRate = 1.0/60.0;
-    private final double frameRate = 1.0/60.0;
+    private final double updateRate = 1.0/30.0;
+    private final double frameRate = 1.0/30.0;
     
     private long nextStatTime;		//next time we will measure statistics
     private int fps = 0;			//frames per second
