@@ -24,9 +24,8 @@ public class Display extends Canvas {
 	private long frameTime;
 	private long updateTime;
 	
-	public Display(int width, int height, Game game) {
+	public Display(Game game) {
 		this.game = game;
-		setPreferredSize(new Dimension(width, height));
 		setFocusable(false);
 		fps = 0;
 		ups = 0;
@@ -54,10 +53,7 @@ public class Display extends Canvas {
         BufferStrategy bufferStrategy = getBufferStrategy();
         Graphics g = bufferStrategy.getDrawGraphics();
 
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, getWidth(), getHeight());
-        
-        renderer.render(g);
+        renderer.render(g, getWidth(), getHeight());
         
         drawUpdateData(g);
 

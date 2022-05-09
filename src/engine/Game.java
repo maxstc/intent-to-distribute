@@ -58,6 +58,7 @@ public class Game {
 	public void update() {
 		float dx = 0;
 		float dy = 0;
+		checkMapModes();
 		if (input.isPressed(KeyEvent.VK_W)) {
 			dy = -10 / camera.getZoom();
 		}
@@ -77,6 +78,17 @@ public class Game {
 		if (tickProgress == updatesPerTick) {
 			tick();
 			tickProgress = 0;
+		}
+	}
+	
+	public void checkMapModes() {
+		if (input.isPressed(KeyEvent.VK_0)) {
+			//tiledataalpha mapmode
+			tileMap.updateMapMode(0);
+		}
+		if (input.isPressed(KeyEvent.VK_9)) {
+			//all red mapmode
+			tileMap.updateMapMode(1);
 		}
 	}
 	
@@ -146,12 +158,12 @@ public class Game {
 		
 		System.out.println(trueX + ", " + trueY);
 		
+		//Generates a new map
+//		tileMap = new TileMap(mapSize, mapSize);
+//		mainFrame.getDisplay().resetRenderer();
+		
 		selectedTile = tileMap.getTile(trueX, trueY);
 		System.out.println(selectedTile);
-		
-		//Generates a new map
-		//tileMap = new TileMap(mapSize, mapSize);
-		//mainFrame.getDisplay().resetRenderer();
 		
 	}
 	

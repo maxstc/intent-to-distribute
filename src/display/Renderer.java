@@ -42,14 +42,17 @@ public class Renderer {
 	 * Renders all the hexagons and their borders
 	 * @param g
 	 */
-	public void render(Graphics g) {
-		
+	public void render(Graphics g, int width, int height) {
+
+		g.setColor(Color.BLACK);
+        g.fillRect(0, 0, width, height);
+        
 		//Maybe use this to render faster?
 		//BufferedImage img = new BufferedImage(game.getMainFrame().getDisplay().getWidth(), game.getMainFrame().getDisplay().getHeight(), BufferedImage.TYPE_INT_RGB);
 		
 		//The boundaries halfway through the window on screen
-		int halfWidth = game.getMainFrame().getDisplay().getWidth() / 2;
-		int halfHeight = game.getMainFrame().getDisplay().getHeight() / 2;
+		int halfWidth = width / 2;
+		int halfHeight = height / 2;
 		
 		//Update the positions of each point in relation to the camera's position and zoom
 		game.getTileMap().getPoints().parallelStream().forEach((Point p) -> {
@@ -57,10 +60,10 @@ public class Renderer {
 		});
 		
 		//Calculate the minimum and maximum visible x and y values depending on the camera position and zoom in advance so we can reuse it without calculating it for each point
-		float minX = game.getCamera().getX() - ((game.getMainFrame().getDisplay().getWidth() / 2) / (game.getCamera().getZoom()));
-		float maxX = game.getCamera().getX() + ((game.getMainFrame().getDisplay().getWidth() / 2) / (game.getCamera().getZoom()));
-		float minY = game.getCamera().getY() - ((game.getMainFrame().getDisplay().getHeight() / 2) / (game.getCamera().getZoom()));
-		float maxY = game.getCamera().getY() + ((game.getMainFrame().getDisplay().getHeight() / 2) / (game.getCamera().getZoom()));
+		float minX = game.getCamera().getX() - (halfWidth / game.getCamera().getZoom());
+		float maxX = game.getCamera().getX() + (halfWidth / game.getCamera().getZoom());
+		float minY = game.getCamera().getY() - (halfHeight / game.getCamera().getZoom());
+		float maxY = game.getCamera().getY() + (halfHeight / game.getCamera().getZoom());
 		
 		//Figure out which tiles are visible
 		visibleTiles = tiles.parallelStream().filter((Tile t) -> {

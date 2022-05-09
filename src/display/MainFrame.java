@@ -1,5 +1,8 @@
 package display;
 
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 import engine.Game;
@@ -18,8 +21,8 @@ public class MainFrame extends JFrame {
 		setTitle("itd");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(true);
-		
-       	display = new Display(width, height, game);
+		 
+       	display = new Display(game);
 		add(display);
 		pack();
 		display.createBuffer();

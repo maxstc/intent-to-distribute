@@ -113,6 +113,17 @@ public class Tile {
 		color = rain(tileDataAlpha);
 	}
 	
+	public void resetColor(int mapMode) {
+		switch (mapMode) {
+		case 0:
+			color = rain(tileDataAlpha);
+			break;
+		case 1:
+			color = rain((x * y) / 10000f);
+			break;
+		}
+	}
+	
 	/**
 	 * Converts a number from 0 to 1 to a color.
 	 * Vaguely follows the color spectrum, with 0 being red, and 1 being purple

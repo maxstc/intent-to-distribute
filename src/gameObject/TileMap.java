@@ -11,10 +11,14 @@ public class TileMap {
 	private Tile[][] tiles;
 	private Set<Point> points;
 	
+	private int mapMode;
+	
 	public TileMap(int width, int length) {
 		tiles = new Tile[width][length];
 		points = new HashSet<>();
+		mapMode = 0;
 		initializeTiles();
+
 		//procedurally generate the map
 		splitTiles(30);
 		splitTiles(8);
@@ -43,6 +47,19 @@ public class TileMap {
 			for (int i = 0; i < tiles.length; i++) {
 				for (int j = 0; j < tiles[0].length; j++) {
 					tiles[i][j].reset();
+				}
+			}
+		}
+	}
+	
+	public void updateMapMode(int mapMode) {
+		System.out.println("mapmode" + mapMode);
+		if (mapMode >= 0 && mapMode <= 1 && mapMode != this.mapMode) {
+			System.out.println("doing");
+			this.mapMode = mapMode;
+			for (int i = 0; i < tiles.length; i++) {
+				for (int j = 0; j < tiles[0].length; j++) {
+					tiles[i][j].resetColor(mapMode);
 				}
 			}
 		}
