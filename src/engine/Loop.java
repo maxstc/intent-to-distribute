@@ -57,7 +57,7 @@ public class Loop implements Runnable {
             //if we have taken enough time that we can now render (i.e. 1/60th of a second if the target fps is 60), then render
             if (renderCounter >= frameRate) {
             	render();
-            	renderCounter -= frameRate;
+            	renderCounter = 0;
             }
             
             if (System.currentTimeMillis() >= nextStatTime) {

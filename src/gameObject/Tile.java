@@ -10,13 +10,7 @@ import java.util.Set;
  */
 public class Tile {
 	
-	//TileData tileData; //will be used for a tile's non geometric/visual data
-	
-	//These range from 0 to 1 and determine the tile's color
-	public float tileDataAlpha;
-	public float tileDataBeta; //intermediary value used for changing the tileDataAlpha
-	
-	private TileData tileData;
+	private TileData tileData; //used for a tile's non visual data
 	
 	private static final float SQRT_3 = (float) Math.sqrt(3.0);
 
@@ -40,17 +34,13 @@ public class Tile {
 	private Color color;
 	
 	public Tile(int x, int y, float sideLength, TileMap tileMap) {
-		
-		tileDataAlpha = (float) Math.random();
-		tileDataBeta = tileDataAlpha;
-		
-		tileData = new TileData();
+		tileData = new TileData(this);
 		
 		this.x = x;
 		this.y = y;
 		
 		this.tileMap = tileMap;
-		color = new Color((int) (tileDataAlpha * 255), (int) (tileDataAlpha * 255), (int) (tileDataAlpha * 255));
+		color = Color.BLACK;
 
 		this.sideLength = sideLength;
 		
@@ -59,8 +49,6 @@ public class Tile {
 		yPoints = new int[6];
 		
 		initializePoints();
-		
-		//updatePoints();
 	}
 	
 	public int getX() {
@@ -74,52 +62,13 @@ public class Tile {
 		return tileData;
 	}
 	
-	/**
-	 * Finds the neighbors of this tile and sets this tile's tileDataAlpha to a weighted average of its and its neighbors (and their neighbors') tileDataAlpha
-	 */
-	public void smooth() {
-		tileDataBeta = 0;
-		Set<Tile> n = getNeighbors();
-		Set<Tile> neighbors = new HashSet<>();
-		for (Tile t : n) {
-			neighbors.addAll(t.getNeighbors());
-		}
-		int num = 0;
-		for (Tile t : neighbors) {
-			tileDataBeta += (t.tileDataAlpha);
-			num++;
-		}
-		tileDataBeta /= num;
-		tileDataBeta = tileDataAlpha * 0.3f + tileDataBeta * 0.7f;
-		tileDataBeta = 0.5f * sigmoid(tileDataBeta) + 0.5f * tileDataBeta;
-	}
-	
-	/**
-	 * Performs a sigmoid-like function on {@code x}
-	 * 
-	 * It is x^2 from 0 to 0.5 and -2(x-1)^2+1 from 0.5 to 1
-	 * @param x
-	 * @return
-	 */
-	private float sigmoid(float x) {
-		if (x <= 0.5f) {
-			return 2 * x * x;
-		}
-		return -2 * (x - 1) * (x - 1) + 1;
-	}
-	
-	public void reset() {
-		tileDataAlpha = tileDataBeta;
-		color = rain(tileDataAlpha);
-	}
-	
 	public void resetColor(int mapMode) {
 		switch (mapMode) {
 		case 0:
-			color = rain(tileDataAlpha);
+			color = rain(tileData.getHeight());
 			break;
 		case 1:
-			color = rain((x * y) / 10000f);
+			color = rain(tileData.getTemp());
 			break;
 		}
 	}
@@ -345,7 +294,7 @@ public class Tile {
 	 * Not used yet
 	 */
 	public void click() {
-		
+		System.out.println(tileData.getHeight());
 	}
 	
 	public int[] getXPoints() {

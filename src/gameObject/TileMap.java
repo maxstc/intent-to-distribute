@@ -16,13 +16,15 @@ public class TileMap {
 	public TileMap(int width, int length) {
 		tiles = new Tile[width][length];
 		points = new HashSet<>();
-		mapMode = 0;
+		mapMode = -1;
 		initializeTiles();
 
 		//procedurally generate the map
 		splitTiles(30);
 		splitTiles(8);
 		smooth(3);
+		calcTemp();
+		updateMapMode(0);
 	}
 	
 	public Tile[][] getTiles() {
@@ -36,18 +38,6 @@ public class TileMap {
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[0].length; j++) {
 				tiles[i][j] = new Tile(i, j, 1.0f, this);
-			}
-		}
-		for (int k = 0; k < 0; k++) {
-			for (int i = 0; i < tiles.length; i++) {
-				for (int j = 0; j < tiles[0].length; j++) {
-					tiles[i][j].smooth();
-				}
-			}
-			for (int i = 0; i < tiles.length; i++) {
-				for (int j = 0; j < tiles[0].length; j++) {
-					tiles[i][j].reset();
-				}
 			}
 		}
 	}
@@ -96,12 +86,12 @@ public class TileMap {
 		for (int k = 0; k < n; k++) {
 			for (int i = 0; i < tiles.length; i++) {
 				for (int j = 0; j < tiles[0].length; j++) {
-					tiles[i][j].smooth();
+					tiles[i][j].getTileData().smooth();
 				}
 			}
 			for (int i = 0; i < tiles.length; i++) {
 				for (int j = 0; j < tiles[0].length; j++) {
-					tiles[i][j].reset();
+					tiles[i][j].getTileData().reset();
 				}
 			}
 		}
@@ -154,11 +144,19 @@ public class TileMap {
 		for (int i = 0; i < plates.length; i++) { //for each plate
 			float rand = (float) Math.random(); //generate a random number
 			for (Tile t : plates[i]) { //for each tile in that plate
-				t.tileDataBeta = rand * 0.3f + t.tileDataBeta * 0.7f; //modify the tile's data by that random number
-				t.reset(); //reset the tileDataAlpha and color of that tile
+				t.getTileData().setTempVar(rand * 0.3f + t.getTileData().getHeight() * 0.7f); //modify the tile's data by that random number
+				t.getTileData().reset(); //reset the height and color of that tile
 			}
 		}
 		
+	}
+	
+	public void calcTemp() {
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[0].length; j++) {
+				tiles[i][j].getTileData().calcTemp();
+			}
+		}
 	}
 	
 	public Tile getTile(int x, int y) {
