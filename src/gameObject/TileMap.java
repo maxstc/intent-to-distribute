@@ -24,6 +24,7 @@ public class TileMap {
 		splitTiles(8);
 		smooth(3);
 		calcTemp();
+		calcIsLand();
 		updateMapMode(0);
 	}
 	
@@ -44,7 +45,7 @@ public class TileMap {
 	
 	public void updateMapMode(int mapMode) {
 		System.out.println("mapmode" + mapMode);
-		if (mapMode >= 0 && mapMode <= 1 && mapMode != this.mapMode) {
+		if (mapMode >= 0 && mapMode <= 2 && mapMode != this.mapMode) {
 			System.out.println("doing");
 			this.mapMode = mapMode;
 			for (int i = 0; i < tiles.length; i++) {
@@ -164,6 +165,14 @@ public class TileMap {
 			return null;
 		}
 		return tiles[x][y];
+	}
+	
+	public void calcIsLand() {
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[0].length; j++) {
+				tiles[i][j].getTileData().calcIsLand();
+			}
+		}
 	}
 	
 }

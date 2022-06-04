@@ -82,13 +82,14 @@ public class Game {
 	}
 	
 	public void checkMapModes() {
-		if (input.isPressed(KeyEvent.VK_0)) {
-			//tiledataalpha mapmode
+		if (input.isPressed(KeyEvent.VK_0)) { //height
 			tileMap.updateMapMode(0);
 		}
-		if (input.isPressed(KeyEvent.VK_9)) {
-			//all red mapmode
+		if (input.isPressed(KeyEvent.VK_9)) { //temp
 			tileMap.updateMapMode(1);
+		}
+		if (input.isPressed(KeyEvent.VK_8)) { //land
+			tileMap.updateMapMode(2);
 		}
 	}
 	

@@ -12,12 +12,14 @@ public class TileData {
 	private float height;
 	private float temp;
 	private float tempVar;
+	private boolean isLand;
 	
 	public TileData(Tile parent) {
 		this.parent = parent;
 		height = (float) Math.random();
 		temp = 0f;
 		tempVar = 0f;
+		isLand = false;
 	}
 	
 	/**
@@ -74,9 +76,13 @@ public class TileData {
 		this.tempVar = tempVar;
 	}
 	
+	public boolean getIsLand() {
+		return isLand;
+	}
+	
 	public void calcTemp() {
 		float latitude = Math.abs(50 - parent.getY()) / 50f;
-		float x = (height * height * height) + (latitude * latitude);
+		float x = 1f - (height * height * height) - (latitude * latitude);
 		if (x < 0f) {
 			temp = 0f;
 		}
@@ -87,6 +93,10 @@ public class TileData {
 			temp = x;
 		}
 		System.out.println(x);
+	}
+	
+	public void calcIsLand() {
+		isLand = height < 0.6f;
 	}
 	
 }

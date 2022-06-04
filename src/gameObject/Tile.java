@@ -70,6 +70,14 @@ public class Tile {
 		case 1:
 			color = rain(tileData.getTemp());
 			break;
+		case 2:
+			if (tileData.getIsLand()) {
+				color = Color.GREEN;
+			}
+			else {
+				color = Color.BLUE;
+			}
+			break;
 		}
 	}
 	
