@@ -7,12 +7,19 @@ import java.util.Set;
  * This class contains data dealing with the game model
  */
 public class TileData {
+	
+	private static float SEA_LEVEL = 0.4f;
+	private static float POP_COEFF = 1f / (1f - SEA_LEVEL);
+	private static float COAST_COEFF = 2f;
 
 	private Tile parent;
 	private float height;
 	private float temp;
 	private float tempVar;
+	//private float rain;
 	private boolean isLand;
+	private float pop;
+	private float civ;
 	
 	public TileData(Tile parent) {
 		this.parent = parent;
@@ -72,6 +79,10 @@ public class TileData {
 		return tempVar;
 	}
 	
+	public float getPop() {
+		return pop;
+	}
+	
 	public void setTempVar(float tempVar) {
 		this.tempVar = tempVar;
 	}
@@ -80,8 +91,12 @@ public class TileData {
 		return isLand;
 	}
 	
+	public float getCiv() {
+		return civ;
+	}
+	
 	public void calcTemp() {
-		float latitude = Math.abs(50 - parent.getY()) / 50f;
+		float latitude = parent.getY() / 100f;
 		float x = 1f - (height * height * height) - (latitude * latitude);
 		if (x < 0f) {
 			temp = 0f;
@@ -95,8 +110,43 @@ public class TileData {
 		System.out.println(x);
 	}
 	
+	public void calcPop() {
+		if (height < SEA_LEVEL) {
+			pop = 0f;
+		}
+		else {
+			pop = (1f - height) * POP_COEFF;
+		}
+	}
+	
 	public void calcIsLand() {
-		isLand = height < 0.6f;
+		isLand = height > 0.4f;
+	}
+	
+	public void calcCiv() {
+		if (!isLand) {
+			civ = 0f;
+			return;
+		}
+		float total = 0f;
+		boolean isCoastal = false;
+		Set<Tile> n = parent.getNeighbors();
+		Set<Tile> neighbors = new HashSet<>();
+		for (Tile t : n) {
+			if (!t.getTileData().getIsLand()) {
+				isCoastal = true;
+			}
+			neighbors.addAll(t.getNeighbors());
+		}
+		int num = 0;
+		for (Tile t : neighbors) {
+			total += t.getTileData().getPop();
+			num++;
+		}
+		civ = total / num;
+		if (isCoastal)  {
+			civ = civ * COAST_COEFF;
+		}
 	}
 	
 }

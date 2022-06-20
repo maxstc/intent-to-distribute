@@ -25,6 +25,9 @@ public class TileMap {
 		smooth(3);
 		calcTemp();
 		calcIsLand();
+		calcRain();
+		calcPop();
+		calcCiv();
 		updateMapMode(0);
 	}
 	
@@ -45,7 +48,7 @@ public class TileMap {
 	
 	public void updateMapMode(int mapMode) {
 		System.out.println("mapmode" + mapMode);
-		if (mapMode >= 0 && mapMode <= 2 && mapMode != this.mapMode) {
+		if (mapMode >= 0 && mapMode <= 4 && mapMode != this.mapMode) {
 			System.out.println("doing");
 			this.mapMode = mapMode;
 			for (int i = 0; i < tiles.length; i++) {
@@ -147,9 +150,10 @@ public class TileMap {
 			for (Tile t : plates[i]) { //for each tile in that plate
 				t.getTileData().setTempVar(rand * 0.3f + t.getTileData().getHeight() * 0.7f); //modify the tile's data by that random number
 				t.getTileData().reset(); //reset the height and color of that tile
+				
+				//TODO separate the resetting to make the calcRain function
 			}
 		}
-		
 	}
 	
 	public void calcTemp() {
@@ -171,6 +175,26 @@ public class TileMap {
 		for (int i = 0; i < tiles.length; i++) {
 			for (int j = 0; j < tiles[0].length; j++) {
 				tiles[i][j].getTileData().calcIsLand();
+			}
+		}
+	}
+	
+	public void calcRain() {
+		
+	}
+	
+	public void calcPop() {
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[0].length; j++) {
+				tiles[i][j].getTileData().calcPop();
+			}
+		}
+	}
+	
+	public void calcCiv() {
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[0].length; j++) {
+				tiles[i][j].getTileData().calcCiv();
 			}
 		}
 	}

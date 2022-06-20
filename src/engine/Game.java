@@ -91,6 +91,12 @@ public class Game {
 		if (input.isPressed(KeyEvent.VK_8)) { //land
 			tileMap.updateMapMode(2);
 		}
+		if (input.isPressed(KeyEvent.VK_7)) {
+			tileMap.updateMapMode(3);
+		}
+		if (input.isPressed(KeyEvent.VK_6)) {
+			tileMap.updateMapMode(4);
+		}
 	}
 	
 	/**

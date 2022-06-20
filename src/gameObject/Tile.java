@@ -78,6 +78,12 @@ public class Tile {
 				color = Color.BLUE;
 			}
 			break;
+		case 3:
+			color = rain(tileData.getPop());
+			break;
+		case 4:
+			color = rain(tileData.getCiv());
+			break;
 		}
 	}
 	
