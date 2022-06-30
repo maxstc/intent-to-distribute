@@ -1,7 +1,12 @@
 package gameObject;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+
+import engine.Game;
 
 /**
  * This class contains the {@code Tile}s and methods dealing with their manipulation and creation
@@ -28,6 +33,7 @@ public class TileMap {
 		calcRain();
 		calcPop();
 		calcCiv();
+		calcSettlement();
 		updateMapMode(0);
 	}
 	
@@ -47,9 +53,9 @@ public class TileMap {
 	}
 	
 	public void updateMapMode(int mapMode) {
-		System.out.println("mapmode" + mapMode);
+		//System.out.println("mapmode" + mapMode);
 		if (mapMode >= 0 && mapMode <= 4 && mapMode != this.mapMode) {
-			System.out.println("doing");
+			//System.out.println("doing");
 			this.mapMode = mapMode;
 			for (int i = 0; i < tiles.length; i++) {
 				for (int j = 0; j < tiles[0].length; j++) {
@@ -196,6 +202,29 @@ public class TileMap {
 			for (int j = 0; j < tiles[0].length; j++) {
 				tiles[i][j].getTileData().calcCiv();
 			}
+		}
+	}
+	
+	public void calcSettlement() {
+		List<Tile> sortedTiles = new ArrayList<>(10000);
+		for (int i = 0; i < tiles.length; i++) {
+			for (int j = 0; j < tiles[0].length; j++) {
+				sortedTiles.add(tiles[i][j]);
+			}
+		}
+		sortedTiles.sort(new Comparator<Tile>() {
+
+			@Override
+			public int compare(Tile t1, Tile t2) {
+				//System.out.println(t2.getTileData().getCiv() - t1.getTileData().getCiv());
+				int value = (int) (100000f * (t2.getTileData().getCiv() - t1.getTileData().getCiv()));
+				//System.out.println(value);
+				return value;
+			}
+			
+		});
+		for (int i = 0; i < 5; i++) {
+			System.out.println(sortedTiles.get(i).getX() + ", " + sortedTiles.get(i).getY());
 		}
 	}
 	

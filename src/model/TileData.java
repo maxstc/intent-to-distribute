@@ -1,7 +1,9 @@
-package gameObject;
+package model;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import gameObject.Tile;
 
 /**
  * This class contains data dealing with the game model
@@ -10,7 +12,7 @@ public class TileData {
 	
 	private static float SEA_LEVEL = 0.4f;
 	private static float POP_COEFF = 1f / (1f - SEA_LEVEL);
-	private static float COAST_COEFF = 2f;
+	private static float COAST_BONUS = 0.7f;
 
 	private Tile parent;
 	private float height;
@@ -21,12 +23,15 @@ public class TileData {
 	private float pop;
 	private float civ;
 	
+	private Settlement settlement;
+	
 	public TileData(Tile parent) {
 		this.parent = parent;
 		height = (float) Math.random();
 		temp = 0f;
 		tempVar = 0f;
 		isLand = false;
+		settlement = null;
 	}
 	
 	/**
@@ -107,7 +112,7 @@ public class TileData {
 		else {
 			temp = x;
 		}
-		System.out.println(x);
+		//System.out.println(x);
 	}
 	
 	public void calcPop() {
@@ -145,7 +150,9 @@ public class TileData {
 		}
 		civ = total / num;
 		if (isCoastal)  {
-			civ = civ * COAST_COEFF;
+			//civ = (1f - civ) * COAST_BONUS + civ;
+			civ = (3f * civ) - (3 * civ * civ) + (civ * civ * civ);
+			//civ = (2f * civ) - (civ * civ);
 		}
 	}
 	

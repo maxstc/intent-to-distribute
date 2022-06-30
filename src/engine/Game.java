@@ -170,7 +170,9 @@ public class Game {
 //		mainFrame.getDisplay().resetRenderer();
 		
 		selectedTile = tileMap.getTile(trueX, trueY);
-		selectedTile.click();
+		if (selectedTile != null) {
+			selectedTile.click();
+		}
 		System.out.println(selectedTile);
 		
 	}

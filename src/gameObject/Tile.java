@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import model.TileData;
+
 /**
  * This class contains geometric/visual data about each tile/hexagon
  */
@@ -139,7 +141,14 @@ public class Tile {
 			blue = scale(num, 1.2f, 1f);
 		}
 		
-		return new Color(red, green, blue);
+		try {
+			return new Color(red, green, blue);
+		}
+		catch (Exception e) {
+			System.out.println("Couldn't set color: " + red + ", " + blue + ", " + green);
+			System.out.println(num);
+		}
+		return Color.white;
 	}
 	
 	/**
