@@ -223,6 +223,22 @@ public class TileMap {
 			}
 			
 		});
+		//minimum civ value for city
+		while(sortedTiles.get(0).getTileData().getCiv() >= 0.5) {
+			Tile cityTile = sortedTiles.get(0);
+			cityTile.getTileData().createSettlement();
+			sortedTiles.remove(0);
+			Set<Tile> neighbors = new HashSet<>();
+			neighbors.add(cityTile);
+			for (int i = 0; i < 3f / cityTile.getTileData().getCiv(); i++) {
+				Set<Tile> newNeighbors = new HashSet<>();
+				for (Tile t : neighbors) {
+					newNeighbors.addAll(t.getNeighbors());
+				}
+				neighbors.addAll(newNeighbors);
+			}
+			sortedTiles.removeAll(neighbors);
+		}
 		for (int i = 0; i < 5; i++) {
 			System.out.println(sortedTiles.get(i).getX() + ", " + sortedTiles.get(i).getY());
 		}

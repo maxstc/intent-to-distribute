@@ -156,4 +156,12 @@ public class TileData {
 		}
 	}
 	
+	public Settlement getSettlement() {
+		return settlement;
+	}
+	
+	public void createSettlement() {
+		settlement = new Settlement();
+	}
+	
 }

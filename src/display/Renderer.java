@@ -95,6 +95,10 @@ public class Renderer {
 	private void drawTile(Graphics g, Tile t) {
 		g.setColor(t.getColor());
 		g.fillPolygon(t.getXPoints(), t.getYPoints(), 6);
+		if (t.getTileData().getSettlement() != null) {
+			g.setColor(Color.BLACK);
+			g.fillRect(t.getXPoints()[0],t.getYPoints()[0],t.getXPoints()[1]-t.getXPoints()[0],t.getYPoints()[3]-t.getYPoints()[0]);
+		}
 	}
 	
 	private void shadeSelectedTile(Graphics g, float minX, float maxX, float minY, float maxY) {
