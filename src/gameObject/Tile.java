@@ -12,6 +12,11 @@ import model.TileData;
  */
 public class Tile {
 	
+	public static final Color WATER_COLOR = new Color(50, 120, 200);
+	public static final Color DESERT_COLOR = new Color(120, 140, 140);
+	public static final Color MEDIUM_COLOR = new Color(30, 130, 40);
+	public static final Color GOOD_COLOR = new Color(40, 190, 100);
+	
 	private TileData tileData; //used for a tile's non visual data
 	
 	private static final float SQRT_3 = (float) Math.sqrt(3.0);
@@ -73,11 +78,17 @@ public class Tile {
 			color = rain(tileData.getTemp());
 			break;
 		case 2:
-			if (tileData.getIsLand()) {
-				color = Color.GREEN;
+			if (!tileData.getIsLand()) {
+				color = WATER_COLOR;
+			}
+			else if (tileData.getPop() < (1f / 3f)){
+				color = DESERT_COLOR;
+			}
+			else if (tileData.getPop() < (2f / 3f)) {
+				color = MEDIUM_COLOR;
 			}
 			else {
-				color = Color.BLUE;
+				color = GOOD_COLOR;
 			}
 			break;
 		case 3:

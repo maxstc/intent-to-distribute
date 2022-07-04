@@ -97,7 +97,10 @@ public class Renderer {
 		g.fillPolygon(t.getXPoints(), t.getYPoints(), 6);
 		if (t.getTileData().getSettlement() != null) {
 			g.setColor(Color.BLACK);
-			g.fillRect(t.getXPoints()[0],t.getYPoints()[0],t.getXPoints()[1]-t.getXPoints()[0],t.getYPoints()[3]-t.getYPoints()[0]);
+			int size = t.getXPoints()[1] - t.getXPoints()[0];
+			int centerX = t.getXPoints()[0] + size / 2;
+			int centerY = t.getYPoints()[0] + (int)(size * (Math.sqrt(3) / 2));
+			g.fillRect(centerX - size/2, centerY - size/2, size, size);
 		}
 	}
 	
@@ -124,6 +127,13 @@ public class Renderer {
 		animationCounter += 0.01f;
 		if (animationCounter > 1f) {
 			animationCounter = 0f;
+		}
+		if (st != null && st.getTileData().getSettlement() != null) {
+			g.setColor(Color.BLACK);
+			int size = st.getXPoints()[1] - st.getXPoints()[0];
+			int centerX = st.getXPoints()[0] + size / 2;
+			int centerY = st.getYPoints()[0] + (int)(size * (Math.sqrt(3) / 2));
+			g.fillRect(centerX - size/2, centerY - size/2, size, size);
 		}
 	}
 	
