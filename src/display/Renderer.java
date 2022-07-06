@@ -2,7 +2,7 @@ package display;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImage; //may be used for alternative rendering strategy
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +20,9 @@ public class Renderer {
 	private Game game;
 	private List<Tile> tiles;
 	private List<Tile> visibleTiles;
-	private final static Color outlineColor = Color.white;
+	private final static Color outlineColor = Color.white; //outline if we have each tile have an outline
+	
+	//used for alternative rendering strategy
 	private final static float TWO_DIV_SQRT_3 = (float) (2 / Math.sqrt(3));
 	private final static int SQRT_3_DIV_2 = (int) (Math.sqrt(3) / 2);
 	
@@ -39,7 +41,7 @@ public class Renderer {
 	}
 	
 	/**
-	 * Renders all the hexagons and their borders
+	 * Renders all the hexagons (tiles) (and their borders if enabled)
 	 * @param g
 	 */
 	public void render(Graphics g, int width, int height) {
@@ -47,7 +49,7 @@ public class Renderer {
 		g.setColor(Color.BLACK);
         g.fillRect(0, 0, width, height);
         
-		//Maybe use this to render faster?
+		//Initialize buffered image for alternative rendering strategy
 		//BufferedImage img = new BufferedImage(game.getMainFrame().getDisplay().getWidth(), game.getMainFrame().getDisplay().getHeight(), BufferedImage.TYPE_INT_RGB);
 		
 		//The boundaries halfway through the window on screen
@@ -65,27 +67,29 @@ public class Renderer {
 		float minY = game.getCamera().getY() - (halfHeight / game.getCamera().getZoom());
 		float maxY = game.getCamera().getY() + (halfHeight / game.getCamera().getZoom());
 		
-		//Figure out which tiles are visible
+		//Determine which tiles are visible
 		visibleTiles = tiles.parallelStream().filter((Tile t) -> {
 			return t.isVisible(minX, maxX, minY, maxY);
 		}).collect(Collectors.toList());
 		
-		//Update the x and y values stored in the hexagons {@code Tile}s
+		//Update the x and y values stored in the hexagons (tiles)
 		visibleTiles.parallelStream().forEach((Tile t) -> {
 			t.updatePoints();
 		});
 		
-		//Draw each {@code Tile}
+		//Draw each hexagon (tile)
 		visibleTiles.forEach((Tile t) -> {
 			drawTile(g, t);
 			//drawHex(img, t.getColor(), t.getXPoints()[0], t.getYPoints()[0], hexwidth, hexheight);
 		});
-		//Draw each (@code Tile}'s outline
+
+		//Draw each hexagon's (tile's) outline
 //		g.setColor(outlineColor);
 //		visibleTiles.parallelStream().forEach((Tile t) -> {
 //			drawOutline(img, t);
 //		});
 
+		//Shade the current selected tile
 		shadeSelectedTile(g, minX, maxX, minY, maxY);
 	}
 	
@@ -95,6 +99,8 @@ public class Renderer {
 	private void drawTile(Graphics g, Tile t) {
 		g.setColor(t.getColor());
 		g.fillPolygon(t.getXPoints(), t.getYPoints(), 6);
+		
+		//Draw a settlement if there is one
 		if (t.getTileData().getSettlement() != null) {
 			g.setColor(Color.BLACK);
 			int size = t.getXPoints()[1] - t.getXPoints()[0];
@@ -104,6 +110,14 @@ public class Renderer {
 		}
 	}
 	
+	/**
+	 * Shades in the selected {@code Tile}
+	 * @param g
+	 * @param minX the minimum visible x value
+	 * @param maxX the maximum visible x value
+	 * @param minY the minimum visible y value
+	 * @param maxY the maximum visible y value
+	 */
 	private void shadeSelectedTile(Graphics g, float minX, float maxX, float minY, float maxY) {
 		Tile st = game.getSelectedTile();
 		if (st != null && st.isVisible(minX, maxX, minY, maxY)) {
@@ -137,7 +151,7 @@ public class Renderer {
 		}
 	}
 	
-	//Potential to draw hexes faster? (probably not)
+	//Alternative rendering strategy
 //	public void drawHex(BufferedImage img, Color tileColor, int x, int y, int sidelength, int hexheight) {
 //		long time = System.nanoTime();
 //		if (y > img.getHeight()) {

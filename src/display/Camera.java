@@ -37,6 +37,7 @@ public class Camera {
 		y+=dy;
 
 		//set maximum values for x and y
+		//should have maximum values depend on the size of the tile map
 //		if (x < 0) {
 //			x = 0;
 //		}
@@ -50,7 +51,11 @@ public class Camera {
 //			y = 173.21f;
 //		}
 		
-		zoom+=(-1 * mouseScroll * (zoom / 10f));
+		//zoom in or out depending on how much the mouse was scrolled
+		zoom += (-1 * mouseScroll * (zoom / 10f));
+
+		//increasing zoom is zooming in, decreasing zoom is zooming out
+		//minimum and maximum zoom
 		if (zoom < 1) {
 			zoom = 1;
 		}

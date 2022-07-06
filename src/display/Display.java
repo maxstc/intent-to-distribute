@@ -2,7 +2,6 @@ package display;
 
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
@@ -19,10 +18,10 @@ public class Display extends Canvas {
 	private Game game;
 	private Renderer renderer;
 	
-	private int fps;
-	private int ups;
-	private long frameTime;
-	private long updateTime;
+	private int fps; //frames per second
+	private int ups; //updates per second
+	private long frameTime; //time taken to render a frame (for statistics)
+	private long updateTime; //time taken to update (for statistics)
 	
 	public Display(Game game) {
 		this.game = game;
@@ -40,7 +39,7 @@ public class Display extends Canvas {
 	}
 	
 	/**
-	 * Resets the renderer (when a new map is created)
+	 * Resets the renderer (if a new map is created, this is necessary)
 	 */
 	public void resetRenderer() {
 		renderer = new Renderer(game);
@@ -55,6 +54,7 @@ public class Display extends Canvas {
 
         renderer.render(g, getWidth(), getHeight());
         
+        //renders statistics
         drawUpdateData(g);
 
         g.dispose();
@@ -62,7 +62,7 @@ public class Display extends Canvas {
     }
 	
 	/**
-	 * Draws the frames per second, updates per second, frame time (in nanoseconds), update time (in nanoseconds), and the tick progress
+	 * Draws the statistics: frames per second, updates per second, frame time (in nanoseconds), update time (in nanoseconds), and the tick progress
 	 * @param g
 	 */
 	public void drawUpdateData(Graphics g) {

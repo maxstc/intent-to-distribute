@@ -25,9 +25,10 @@ public class TileMap {
 		initializeTiles();
 
 		//procedurally generate the map
-		splitTiles(30);
-		splitTiles(8);
-		smooth(3);
+		splitTiles(50);
+		splitTiles(10);
+		splitTiles(3);
+		smooth(4);
 		calcTemp();
 		calcIsLand();
 		calcRain();

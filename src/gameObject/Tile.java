@@ -58,17 +58,6 @@ public class Tile {
 		initializePoints();
 	}
 	
-	public int getX() {
-		return x;
-	}
-	public int getY() {
-		return y;
-	}
-	
-	public TileData getTileData() {
-		return tileData;
-	}
-	
 	public void resetColor(int mapMode) {
 		switch (mapMode) {
 		case 0:
@@ -191,10 +180,7 @@ public class Tile {
 		
 		return neighbors;
 	}
-	
-	public void setColor(Color c) {
-		color = c;
-	}
+
 	
 	/**
 	 * Adds an individual neighbor, if it exists
@@ -331,22 +317,6 @@ public class Tile {
 		System.out.println(tileData.getHeight());
 	}
 	
-	public int[] getXPoints() {
-		return xPoints;
-	}
-	
-	public int[] getYPoints() {
-		return yPoints;
-	}
-	
-	public Color getColor() {
-		return color;
-	}
-	
-	public Point[] getPoints() {
-		return points;
-	}
-	
 	/**
 	 * Returns {@code true} if this tile is within the specified bounds, {@code false} otherwise
 	 * @param minX
@@ -369,6 +339,37 @@ public class Tile {
 			return false;
 		}
 		return true;
+	}
+	
+	public void setColor(Color c) {
+		color = c;
+	}
+	
+	public TileData getTileData() {
+		return tileData;
+	}
+	
+	public int[] getXPoints() {
+		return xPoints;
+	}
+	
+	public int[] getYPoints() {
+		return yPoints;
+	}
+	
+	public Color getColor() {
+		return color;
+	}
+	
+	public Point[] getPoints() {
+		return points;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	public int getY() {
+		return y;
 	}
 	
 	public String toString() {

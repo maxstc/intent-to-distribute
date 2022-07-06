@@ -13,7 +13,7 @@ import input.Input;
  */
 public class Game {
 	
-	private static int mapSize = 100;
+	private static int mapSize = 200; //The width and height of the map to be created
 	
 	private Tile selectedTile;
 	
@@ -22,7 +22,7 @@ public class Game {
 	
 	private TileMap tileMap;
 	
-	private int updatesPerTick = 120;
+	private int updatesPerTick = 120; //The default number of updates that a tick takes
 	
 	private int tickProgress = 0;
 	private boolean ticking = true;
@@ -43,16 +43,6 @@ public class Game {
 		mainFrame.getDisplay().addMouseWheelListener(input);
 		
 		selectedTile = null;
-	}
-	
-	
-	
-	public Tile[][] getTiles() {
-		return tileMap.getTiles();
-	}
-	
-	public Camera getCamera() {
-		return camera;
 	}
 	
 	public void update() {
@@ -91,10 +81,10 @@ public class Game {
 		if (input.isPressed(KeyEvent.VK_8)) { //land
 			tileMap.updateMapMode(2);
 		}
-		if (input.isPressed(KeyEvent.VK_7)) {
+		if (input.isPressed(KeyEvent.VK_7)) { //pop
 			tileMap.updateMapMode(3);
 		}
-		if (input.isPressed(KeyEvent.VK_6)) {
+		if (input.isPressed(KeyEvent.VK_6)) { //civ
 			tileMap.updateMapMode(4);
 		}
 	}
@@ -106,10 +96,6 @@ public class Game {
 	 */
 	public void tick() {
 		
-	}
-	
-	public TileMap getTileMap() {
-		return tileMap;
 	}
 	
 	/**
@@ -177,14 +163,6 @@ public class Game {
 		
 	}
 	
-	public Tile getSelectedTile() {
-		return selectedTile;
-	}
-	
-	public float getTickProgress() {
-		return (tickProgress / (float) updatesPerTick);
-	}
-	
 	/**
 	 * Called when the user presses a button
 	 * 
@@ -223,6 +201,26 @@ public class Game {
 	
 	public MainFrame getMainFrame() {
 		return mainFrame;
+	}
+	
+	public Tile[][] getTiles() {
+		return tileMap.getTiles();
+	}
+	
+	public Camera getCamera() {
+		return camera;
+	}
+	
+	public Tile getSelectedTile() {
+		return selectedTile;
+	}
+	
+	public float getTickProgress() {
+		return (tickProgress / (float) updatesPerTick);
+	}
+	
+	public TileMap getTileMap() {
+		return tileMap;
 	}
 	
 }
